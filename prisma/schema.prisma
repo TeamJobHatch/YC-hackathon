@@ -4,8 +4,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model User {
@@ -65,4 +65,22 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+model Candidate {
+  id            String   @id @default(cuid())
+  name          String?
+  email         String?
+  skills        String   @default("[]")
+  overallScore  Int?
+  softSkills    Int?
+  explanations  String?
+  createdAt     DateTime @default(now())
+}
+
+model SystemState {
+  id          Int      @id @default(1)
+  lastUpdate  DateTime?
+  lastPatch   String?
+  targetFile  String?
 }

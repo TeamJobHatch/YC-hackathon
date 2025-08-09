@@ -1,11 +1,10 @@
-import HeroSection from "@/components/hero-section";
-import TechStackSection from "@/components/tech-stack-section";
+import ClientPlatform from "@/components/ClientPlatform";
 
 export default function Home() {
   return (
-    <>
-      <HeroSection />
-      <TechStackSection />
-    </>
+    <ClientPlatform 
+      initialSystemState={null}
+      initialSampleCandidate={null}
+    />
   );
 }
