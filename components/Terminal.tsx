@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react'
-import { Terminal as TerminalIcon, X, Minimize2, Maximize2 } from 'lucide-react'
+import { Terminal as TerminalIcon, X } from 'lucide-react'
 
 interface TerminalLog {
   id: string
@@ -31,7 +31,7 @@ const levelColors = {
 export default function Terminal({ className = '' }: TerminalProps) {
   const [logs, setLogs] = useState<TerminalLog[]>([])
   const [isMinimized, setIsMinimized] = useState(false)
-  const [isMaximized, setIsMaximized] = useState(false)
+
   const scrollRef = useRef<HTMLDivElement>(null)
 
   // Auto-scroll to bottom when new logs are added
@@ -71,62 +71,79 @@ export default function Terminal({ className = '' }: TerminalProps) {
 
   if (isMinimized) {
     return (
-      <div className={`fixed bottom-4 right-4 z-50 ${className}`}>
+      <div className={`h-full w-full flex items-center justify-center ${className}`}>
         <button
           onClick={() => setIsMinimized(false)}
           className="flex items-center space-x-2 bg-black/90 backdrop-blur-sm text-green-400 px-4 py-2 rounded-lg border border-green-500/30 hover:border-green-500/50 transition-all shadow-lg shadow-green-500/20"
         >
           <TerminalIcon className="w-4 h-4" />
-          <span className="text-sm font-mono">Terminal ({logs.length})</span>
+          <span className="text-sm font-mono">Sponsor Monitor ({logs.length})</span>
         </button>
       </div>
     )
   }
 
   return (
-    <div className={`fixed ${isMaximized ? 'inset-4' : 'bottom-4 right-4 w-96 h-80'} z-50 ${className}`}>
-      <div className="bg-black/95 backdrop-blur-xl rounded-xl border border-gray-700/50 shadow-2xl shadow-black/50 overflow-hidden">
+    <div className={`h-full w-full ${className}`}>
+      <div className="bg-black/95 backdrop-blur-xl shadow-2xl shadow-black/50 overflow-hidden h-full">
         {/* Terminal Header */}
-        <div className="flex items-center justify-between bg-gray-800/50 px-4 py-2 border-b border-gray-700/50">
-          <div className="flex items-center space-x-3">
-            <div className="flex space-x-1.5">
-              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+        <div className="bg-gray-800/50 px-4 py-3 border-b border-gray-700/50">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center space-x-3">
+              <div className="flex space-x-1.5">
+                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              </div>
+              <div className="flex items-center space-x-2 text-gray-300">
+                <TerminalIcon className="w-4 h-4" />
+                <span className="text-sm font-mono font-bold">Sponsor Activity Monitor</span>
+              </div>
             </div>
-            <div className="flex items-center space-x-2 text-gray-300">
-              <TerminalIcon className="w-4 h-4" />
-              <span className="text-sm font-mono">Backend Activity Monitor</span>
+            
+            <div className="flex items-center space-x-2">
+              <button
+                onClick={clearLogs}
+                className="text-gray-400 hover:text-white transition-colors text-xs font-mono px-2 py-1 rounded"
+              >
+                clear
+              </button>
+
+              <button
+                onClick={() => setIsMinimized(true)}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
           </div>
           
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={clearLogs}
-              className="text-gray-400 hover:text-white transition-colors text-xs font-mono px-2 py-1 rounded"
-            >
-              clear
-            </button>
-            <button
-              onClick={() => setIsMaximized(!isMaximized)}
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              {isMaximized ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
-            </button>
-            <button
-              onClick={() => setIsMinimized(true)}
-              className="text-gray-400 hover:text-white transition-colors"
-            >
-              <X className="w-4 h-4" />
-            </button>
+          {/* Sponsor Legend */}
+          <div className="flex items-center space-x-4 text-xs">
+            <div className="flex items-center space-x-1">
+              <div className="w-2 h-2 bg-orange-400 rounded-full"></div>
+              <span className="text-orange-300 font-mono">CLAUDE</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <div className="w-2 h-2 bg-purple-400 rounded-full"></div>
+              <span className="text-purple-300 font-mono">MORPH</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <div className="w-2 h-2 bg-blue-400 rounded-full"></div>
+              <span className="text-blue-300 font-mono">FREESTYLE</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+              <span className="text-green-300 font-mono">SYSTEM</span>
+            </div>
           </div>
         </div>
 
         {/* Terminal Content */}
         <div 
           ref={scrollRef}
-          className="p-4 font-mono text-sm h-full overflow-y-auto custom-scrollbar"
-          style={{ height: isMaximized ? 'calc(100% - 60px)' : '320px' }}
+          className="p-4 font-mono text-sm overflow-y-auto custom-scrollbar"
+          style={{ height: 'calc(100vh - 90px)' }}
         >
           {logs.length === 0 ? (
             <div className="text-gray-500 text-center py-8">

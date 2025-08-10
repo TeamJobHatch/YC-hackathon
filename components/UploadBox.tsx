@@ -11,9 +11,17 @@ export default function UploadBox() {
 
     setIsUploading(true)
     
+    // @ts-ignore
+    window.addTerminalLog?.('system', 'info', `Processing resume file: ${file.name}`)
+    // @ts-ignore
+    window.addTerminalLog?.('claude', 'info', 'Initializing Claude AI for resume analysis...')
+    
     try {
       const formData = new FormData()
       formData.append('file', file)
+
+      // @ts-ignore
+      window.addTerminalLog?.('claude', 'info', 'Sending resume content to Claude API...')
 
       const response = await fetch('/api/analyzeResume', {
         method: 'POST',
@@ -23,11 +31,20 @@ export default function UploadBox() {
       const result = await response.json()
       
       if (result.candidateId) {
+        // @ts-ignore
+        window.addTerminalLog?.('claude', 'success', 'Resume analysis completed successfully')
+        // @ts-ignore
+        window.addTerminalLog?.('system', 'info', `Candidate created: ${result.candidateId}`)
         // Use window.location for navigation to avoid SSR/Client issues
         window.location.href = `/candidate/${result.candidateId}`
+      } else {
+        // @ts-ignore
+        window.addTerminalLog?.('claude', 'warning', 'Analysis completed but no candidate ID returned')
       }
     } catch (error) {
       console.error('Upload error:', error)
+      // @ts-ignore
+      window.addTerminalLog?.('claude', 'error', `Resume analysis failed: ${(error as Error).message}`)
       alert('Failed to upload resume')
     } finally {
       setIsUploading(false)
@@ -40,7 +57,15 @@ export default function UploadBox() {
 
     setIsUploading(true)
     
+    // @ts-ignore
+    window.addTerminalLog?.('system', 'info', 'Processing resume text input...')
+    // @ts-ignore
+    window.addTerminalLog?.('claude', 'info', 'Initializing Claude AI for text analysis...')
+    
     try {
+      // @ts-ignore
+      window.addTerminalLog?.('claude', 'info', 'Sending resume text to Claude API...')
+
       const response = await fetch('/api/analyzeResume', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -50,11 +75,20 @@ export default function UploadBox() {
       const result = await response.json()
       
       if (result.candidateId) {
+        // @ts-ignore
+        window.addTerminalLog?.('claude', 'success', 'Text analysis completed successfully')
+        // @ts-ignore
+        window.addTerminalLog?.('system', 'info', `Candidate created: ${result.candidateId}`)
         // Use window.location for navigation to avoid SSR/Client issues
         window.location.href = `/candidate/${result.candidateId}`
+      } else {
+        // @ts-ignore
+        window.addTerminalLog?.('claude', 'warning', 'Analysis completed but no candidate ID returned')
       }
     } catch (error) {
       console.error('Text analysis error:', error)
+      // @ts-ignore
+      window.addTerminalLog?.('claude', 'error', `Text analysis failed: ${(error as Error).message}`)
       alert('Failed to analyze resume text')
     } finally {
       setIsUploading(false)

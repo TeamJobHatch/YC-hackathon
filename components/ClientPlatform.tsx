@@ -4,7 +4,6 @@ import Link from 'next/link'
 import UploadBox from "@/components/UploadBox"
 import DemoBar from "@/components/DemoBar"
 import DiffView from "@/components/DiffView"
-import Terminal from "@/components/Terminal"
 import { Badge } from "@/components/ui/badge"
 import { Sparkles, Brain, Code, Zap, CheckCircle, XCircle, AlertCircle, Github, ExternalLink } from "lucide-react"
 
@@ -78,7 +77,7 @@ export default function ClientPlatform({ initialSystemState, initialSampleCandid
   return (
     <>
       {/* Platform Header */}
-      <header className="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-black/20">
+      <header className="sticky top-0 z-50 bg-black/90 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-black/20 w-full">
         <div className="container mx-auto px-4">
           <nav className="flex items-center justify-between h-16">
             {/* Logo/Title */}
@@ -116,15 +115,17 @@ export default function ClientPlatform({ initialSystemState, initialSampleCandid
       </header>
 
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 opacity-20">
+        {/* Main Content Area - Full Width (Terminal is now global) */}
+        <div className="w-full min-h-screen relative">
+          {/* Animated background elements */}
+          <div className="absolute inset-0 opacity-20">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-cyan-500/15 rounded-full blur-2xl animate-pulse delay-500"></div>
       </div>
       
-      {/* API Status Indicator */}
-      <div className="fixed top-24 right-4 z-40 bg-black/90 backdrop-blur-xl rounded-xl border border-white/10 p-3 shadow-2xl max-w-[200px]">
+          {/* API Status Indicator */}
+          <div className="fixed top-24 left-4 z-40 bg-black/90 backdrop-blur-xl rounded-xl border border-white/10 p-3 shadow-2xl max-w-[200px]">
         <h4 className="text-white font-semibold text-xs mb-2">API Status</h4>
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
@@ -282,10 +283,8 @@ export default function ClientPlatform({ initialSystemState, initialSampleCandid
           </div>
         </div>
       </section>
-      
-      {/* Terminal Component */}
-      <Terminal />
-    </div>
+        </div> {/* End Main Content Area */}
+      </div>
     </>
   )
 }
